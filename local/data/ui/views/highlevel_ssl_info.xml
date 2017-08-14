@@ -1,0 +1,23 @@
+<dashboard>
+  <label>High-level ssl info</label>
+  <row>
+    <panel>
+      <title>Apps</title>
+      <table>
+        <search>
+          <query>| tstats count FROM datamodel=pssl.ssldata BY ssldata.app</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
