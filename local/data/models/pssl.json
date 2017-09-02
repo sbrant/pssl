@@ -600,6 +600,78 @@
                     "editable": true,
                     "displayName": "src_port",
                     "comment": ""
+                },
+                {
+                    "fieldName": "ja3",
+                    "owner": "ssldata",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ja3",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ja3_ciphers",
+                    "owner": "ssldata",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ja3_ciphers",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ja3_ec",
+                    "owner": "ssldata",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ja3_ec",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ja3_ec_fmt",
+                    "owner": "ssldata",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ja3_ec_fmt",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ja3_extensions",
+                    "owner": "ssldata",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ja3_extensions",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ja3_version",
+                    "owner": "ssldata",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ja3_version",
+                    "comment": ""
                 }
             ],
             "calculations": [],
