@@ -10,15 +10,15 @@ modtime = 1500251238.307515000
 access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
-version = 6.6.2
-modtime = 1500228299.126244000
+version = 6.6.3
+modtime = 1504334663.221795000
 
 [models/pssl]
 access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
-version = 6.6.2
-modtime = 1500228299.128444000
+version = 6.6.3
+modtime = 1504334663.224445000
 
 [views/highlevel_ssl_info]
 owner = admin
@@ -28,3 +28,15 @@ modtime = 1496274578.957292000
 [app/package/check_for_updates]
 version = 6.6.2
 modtime = 1500251238.308300000
+
+[inputs/splunktcp%3A%2F%2F9997]
+owner = sbrant
+version = 6.6.2
+modtime = 1502851186.868258000
+
+[tags/eventtype%3Dbro_file]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = sbrant
+version = 6.6.3
+modtime = 1504327678.369933000
