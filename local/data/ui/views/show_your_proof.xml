@@ -1,0 +1,37 @@
+<dashboard>
+  <label>SHOW YOUR PROOF</label>
+  <row>
+    <panel>
+      <table>
+        <title>HTTP vs SSL</title>
+        <search>
+          <query>index=* (sourcetype=bro_http OR sourcetype="bro_ssl")  
+| stats dc(user_agent) AS HTTP_USER_AGENT dc(ja3) AS SSL_FINGERPRINT
+| transpose
+| rename column AS Method "row 1" AS count</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>asdf</title>
+        <search>
+          <query>sdfasdf</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>

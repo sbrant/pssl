@@ -1,0 +1,59 @@
+<form>
+  <label>Passive SSL Certificate Information</label>
+  <fieldset submitButton="true">
+    <input type="text" token="sha1" searchWhenChanged="true">
+      <label>Enter SHA1 hash of Certificate</label>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Known Certificate Information</title>
+      <table>
+        <search>
+          <query>index=* sourcetype=stream:tcp ssl_cert_sha1=$sha1$ 
+| lookup ssl_blacklist_2 sha1_cert AS ssl_cert_sha1
+| fillnull value="N/A" reason
+| rename "ssl_client_cipher_names{}" AS ciphers
+| eval cipher_fingerprint = md5(mvjoin(mvsort(ciphers),":"))
+| stats 
+VALUES(time) AS "Dates Seen on Network" 
+VALUES(ssl_issuer) AS Issuer
+VALUES(cipher_fingerprint) AS "Cipher Fingerprint(s)"
+VALUES(reason) AS "abuse.ch ssbl blacklist"
+VALUES(ssl_validity_start) AS "Issued"
+VALUES(ssl_validity_end) AS "Expires"
+VALUES(ssl_serialnumber) AS "Serial Number"
+VALUES(ssl_version) AS "SSL Version"
+VALUES(ssl_subject_common_name) AS "Common Name"
+VALUES(ssl_subject_organization) AS "Organization Name"
+VALUES(ssl_subject_unit) AS "Organization Unit"
+VALUES(ssl_subject_locality) AS "Locality"
+VALUES(ssl_subject_state) AS State
+VALUES(ssl_subject_country) AS Country
+VALUES(ssl_cert_md5) AS MD5
+VALUES(ssl_cert_sha1) AS SHA1
+VALUES(ssl_cert_sha256) AS SHA256 
+VALUES(dest_ip) AS "Destination IPs" 
+VALUES(dest_port) AS "Destination Port"
+by ssl_cert_sha1
+| eval JA3="6734f37431670b3ab4292b8f60f29984"
+| eval "JA3 Detection"="Self Signed Weirdness"
+| fields Issuer "Dates Seen on Network"  "Cipher Fingerprint(s)" JA3 "JA3 Detection" "abuse.ch ssbl blacklist" Issued Expires  "Serial Number" "Organization Name" "Organization Unit" Locality State Country MD5 SHA1 SHA256 "Destination IPs" 
+|transpose
+| rename column AS "Certificate"
+| rename "row 1" AS "Values"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>
