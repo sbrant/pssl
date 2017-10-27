@@ -12,6 +12,7 @@
             "objectName": "ssldata",
             "displayName": "ssldata",
             "parentName": "BaseSearch",
+            "comment": "",
             "fields": [
                 {
                     "fieldName": "_time",
@@ -674,7 +675,37 @@
                     "comment": ""
                 }
             ],
-            "calculations": [],
+            "calculations": [
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "ja3_desc",
+                            "owner": "ssldata",
+                            "type": "string",
+                            "fieldSearch": "",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "ja3_desc",
+                            "comment": "",
+                            "lookupOutputFieldName": "ja3_desc"
+                        }
+                    ],
+                    "calculationType": "Lookup",
+                    "lookupName": "ja3_lookup",
+                    "comment": "",
+                    "lookupInputs": [
+                        {
+                            "inputField": "ja3",
+                            "lookupField": "ja3"
+                        }
+                    ],
+                    "owner": "ssldata",
+                    "calculationID": "vb9scq5i6tp",
+                    "editable": true
+                }
+            ],
             "constraints": [],
             "lineage": "ssldata",
             "baseSearch": "tag=ssl OR tag=tls"
