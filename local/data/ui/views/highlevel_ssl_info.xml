@@ -1,13 +1,23 @@
-<dashboard>
+<form>
   <label>High-level ssl info</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="hlsi_time">
+      <label>Dashboard Time</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
   <row>
     <panel>
-      <title>JA3 Client per Source</title>
+      <title>Sparkline by JA3 Client</title>
       <table>
         <search>
-          <query>| tstats values(ssldata.ja3_desc) count FROM datamodel=pssl.ssldata where ssldata.ja3=* BY ssldata.src_ip</query>
-          <earliest>$earliest$</earliest>
-          <latest>$latest$</latest>
+          <query>| tstats count FROM datamodel=pssl.ssldata where ssldata.ja3=* BY ssldata.src_ip, _time, ssldata.ja3_desc span=1h
+| stats sparkline(count) BY ssldata.ja3_desc</query>
+          <earliest>$hlsi_time.earliest$</earliest>
+          <latest>$hlsi_time.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
@@ -21,4 +31,25 @@
       </table>
     </panel>
   </row>
-</dashboard>
+  <row>
+    <panel>
+      <title>JA3 Client per Source</title>
+      <table>
+        <search>
+          <query>| tstats values(ssldata.ja3_desc) count FROM datamodel=pssl.ssldata where ssldata.ja3=* BY ssldata.src_ip</query>
+          <earliest>$hlsi_time.earliest$</earliest>
+          <latest>$hlsi_time.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>
