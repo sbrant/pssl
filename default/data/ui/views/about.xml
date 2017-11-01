@@ -1,0 +1,17 @@
+<dashboard>
+  <label>About passiveSSL</label>
+  <row>
+    <panel>
+      <html>
+	Created by Steve Brant and Ryan Kovar
+	<br></br>
+	<br></br>
+	This app allows the user to view and investigate passively collected, local SSL data.
+	<br></br>
+	<br></br>
+	The app includes a script in $SPLUNK_HOME/etc/apps/pssl/bin that will pull a list of JA3 client identifications.
+	<br></br>
+      </html>
+    </panel>
+  </row>
+</dashboard>
