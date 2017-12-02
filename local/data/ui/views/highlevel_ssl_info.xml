@@ -1,5 +1,5 @@
 <form>
-  <label>High-level ssl info</label>
+  <label>JA3 info</label>
   <fieldset submitButton="false" autoRun="true">
     <input type="time" token="hlsi_time">
       <label>Dashboard Time</label>
