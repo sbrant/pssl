@@ -1,6 +1,6 @@
 <form script="custom_table_row_expansion.js">
   <label>SSL Info</label>
-  <fieldset submitButton="true" autoRun="true">
+  <fieldset submitButton="true" autoRun="false">
     <input type="time" token="time_range" searchWhenChanged="false">
       <label>Time Range</label>
       <default>
@@ -8,14 +8,14 @@
         <latest>now</latest>
       </default>
     </input>
-    <input type="text" token="ja3_sig">
+    <input type="text" token="ja3_sig" searchWhenChanged="false">
       <label>Partial JA3 Signature</label>
       <default>*</default>
       <prefix>*</prefix>
       <suffix>*</suffix>
       <initialValue>*</initialValue>
     </input>
-    <input type="text" token="hash">
+    <input type="text" token="hash" searchWhenChanged="false">
       <label>Partial Certificate Hash</label>
       <default>*</default>
       <initialValue>*</initialValue>
@@ -74,7 +74,7 @@
         <option name="rangeColors">["0x65a637","0xd93f3c"]</option>
         <option name="rangeValues">[0]</option>
         <option name="refresh.display">progressbar</option>
-        <option name="useColors">1</option>
+        <option name="useColors">0</option>
       </single>
     </panel>
   </row>
@@ -104,7 +104,7 @@ VALUES(ssldata.dest_port) AS "Destination Port"
 VALUES(ssldata.ja3) AS ja3
 VALUES(ssldata.ja3_desc) AS "JA3 Detection"
 from datamodel=pssl.ssldata BY ssldata.ssl_cert_sha1
-| search MD5=$hash$ OR SHA1=$hash$ OR SHA256=$hash$ ja3=$ja3_sig$</query>
+| search MD5=$hash$ OR SHA1=$hash$ OR SHA256=$hash$ OR ja3=$ja3_sig$</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
