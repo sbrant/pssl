@@ -1,5 +1,46 @@
 <form script="custom_table_row_expansion.js">
   <label>SSL Info</label>
+  <!--  <row>
+    <panel>
+      <chart>
+        <search>
+          <query>tag=dns
+| where record_type!="*"
+| search $cdn_match$
+| timechart count by record_type</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <drilldown>
+          <link target="_self">/app/pdns/dns_query_info?form.time_range.earliest=$earliest$&amp;form.time_range.latest=$latest$&amp;form.querytype=$click.name2$</link>
+        </drilldown>
+      </chart>
+    </panel>
+  </row> -->
   <fieldset submitButton="true" autoRun="false">
     <input type="time" token="time_range" searchWhenChanged="false">
       <label>Time Range</label>
@@ -50,10 +91,10 @@
       </single>
     </panel>
     <panel>
+      <title>Distinct Certificate Issuers</title>
       <single>
         <search>
-          <query>| tstats dc(ssldata.ja3) AS numja3 FROM datamodel=pssl.ssldata where ssldata.ja3=* 
-|  fields numja3</query>
+          <query>| tstats dc(ssldata.ssl_issuer) AS ssl_issuer_count FROM datamodel=pssl.ssldata</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -154,45 +195,4 @@ from datamodel=pssl.ssldata BY ssldata.ssl_cert_sha1
       </table>
     </panel>
   </row>
-<!--  <row>
-    <panel>
-      <chart>
-        <search>
-          <query>tag=dns
-| where record_type!="*"
-| search $cdn_match$
-| timechart count by record_type</query>
-          <earliest>$time_range.earliest$</earliest>
-          <latest>$time_range.latest$</latest>
-        </search>
-        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
-        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
-        <option name="charting.axisTitleY.visibility">visible</option>
-        <option name="charting.axisTitleY2.visibility">visible</option>
-        <option name="charting.axisX.scale">linear</option>
-        <option name="charting.axisY.scale">linear</option>
-        <option name="charting.axisY2.enabled">0</option>
-        <option name="charting.axisY2.scale">inherit</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.bubbleMaximumSize">50</option>
-        <option name="charting.chart.bubbleMinimumSize">10</option>
-        <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">gaps</option>
-        <option name="charting.chart.showDataLabels">none</option>
-        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.chart.style">shiny</option>
-        <option name="charting.drilldown">all</option>
-        <option name="charting.layout.splitSeries">0</option>
-        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
-        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
-        <option name="charting.legend.placement">right</option>
-        <drilldown>
-          <link target="_self">/app/pdns/dns_query_info?form.time_range.earliest=$earliest$&amp;form.time_range.latest=$latest$&amp;form.querytype=$click.name2$</link>
-        </drilldown>
-      </chart>
-    </panel>
-  </row> -->
 </form>
