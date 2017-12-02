@@ -25,10 +25,10 @@
   </fieldset>
   <row>
     <panel>
+      <title>Distinct Common Names</title>
       <single>
         <search>
-          <query>| tstats dc(ssldata.ja3) AS numja3 FROM datamodel=pssl.ssldata where ssldata.ja3=* 
-|  fields numja3</query>
+          <query>| tstats dc(ssldata.ssl_subject_common_name) AS comon_name_count FROM datamodel=pssl.ssldata</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -38,10 +38,10 @@
       </single>
     </panel>
     <panel>
+      <title>Distinct Organization Names</title>
       <single>
         <search>
-          <query>| tstats dc(ssldata.ja3) AS numja3 FROM datamodel=pssl.ssldata where ssldata.ja3=* 
-|  fields numja3</query>
+          <query>| tstats dc(ssldata.ssl_subject_organization) AS org_name_count FROM datamodel=pssl.ssldata</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -154,7 +154,7 @@ from datamodel=pssl.ssldata BY ssldata.ssl_cert_sha1
       </table>
     </panel>
   </row>
-  <row>
+<!--  <row>
     <panel>
       <chart>
         <search>
@@ -194,5 +194,5 @@ from datamodel=pssl.ssldata BY ssldata.ssl_cert_sha1
         </drilldown>
       </chart>
     </panel>
-  </row>
+  </row> -->
 </form>
