@@ -1,23 +1,5 @@
 <form script="custom_table_row_expansion.js">
   <label>SSL Info</label>
-  <!--  <row>
-    <panel>
-      <chart>
-        <title>Average bytes by source IP compared to overall average</title>
-        <search>
-          <query>sourcetype=stream:dns | timechart avg(bytes) AS perbytes | eventstats avg(perbytes) AS average</query>
-          <earliest>$time_range.earliest$</earliest>
-          <latest>$time_range.latest$</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.legend.placement">bottom</option>
-        <option name="charting.legend.masterLegend">null</option>
-        <option name="height">300</option>
-        <option name="charting.chart.overlayFields">average</option>
-        <option name="charting.fieldColors">{"perbytes": 0x639BF1, "average":0xFF5A09}</option>
-      </chart>
-    </panel>
-  </row> -->
   <fieldset submitButton="true" autoRun="true">
     <input type="time" token="time_range" searchWhenChanged="false">
       <label>Time Range</label>
@@ -31,6 +13,11 @@
       <default>*</default>
       <prefix>*</prefix>
       <suffix>*</suffix>
+    </input>
+    <input type="text" token="hash">
+      <label>Certificate Hash</label>
+      <default>*</default>
+      <initialValue>*</initialValue>
     </input>
   </fieldset>
   <row>
@@ -91,20 +78,32 @@
   <row>
     <panel>
       <table id="expand_with_events">
-        <title>Click row to drill down on query detail</title>
+        <title>Click row to drill down on detail</title>
         <search>
-          <query>| datamodel pDNS_CIM DNS search
-| search DNS.record_type=$querytype$ DNS.query=$poq$ NOT DNS.ut_domain="None"
-| search $cdn_match$
-| eval upper_dom=upper('DNS.ut_domain')
-| eval upper_dom=if(upper_dom == "NONE",'DNS.ut_domain',upper_dom)
-| stats last(_time) AS "firstQuery" first(_time) AS "lastQuery" count(DNS.query) AS "Number of Queries" dc(DNS.answer) AS "Distinct Answers" dc(DNS.ut_subdomain) AS "Distinct Subdomains" dc(DNS.src) AS "Distinct Clients" max(eval(len('DNS.ut_subdomain'))) AS "Max Subdomain Length" by DNS.ut_domain upper_dom
-| lookup mw_domain_lookup domain AS DNS.ut_domain OUTPUT type AS "Blacklist Type" original_reference AS "Blacklist Reference"
-| sort "Blacklist Type"
-| eval verdict=if(len("Blacklist Type")&gt;1, 1, 0)
-| rangemap field=verdict OK=0-0 NotOK=1-1
-| convert timeformat="%F %H:%M:%S" ctime("firstQuery") AS "First Query" ctime("lastQuery") AS "Last Query"
-| addinfo</query>
+          <query>| tstats VALUES(ssldata.ssl_issuer) AS Issuer 
+VALUES(ssldata.sourcetype) AS Sourcetypes
+VALUES(ssldata.cipher_fingerprint) AS "Cipher Fingerprint(s)" 
+VALUES(ssldata.ssl_validity_start) AS "Issued" 
+VALUES(ssldata.ssl_validity_end) AS "Expires" 
+VALUES(ssldata.ssl_serialnumber) AS "Serial Number" 
+VALUES(ssldata.ssl_version) AS "SSL Version" 
+VALUES(ssldata.ssl_subject_common_name) AS "Common Name" 
+VALUES(ssldata.ssl_subject_organization) AS "Organization Name" 
+VALUES(ssldata.ssl_subject_unit) AS "Organization Unit" 
+VALUES(ssldata.ssl_subject_locality) AS "Locality" 
+VALUES(ssldata.ssl_subject_state) AS State 
+VALUES(ssldata.ssl_subject_country) AS Country 
+VALUES(ssldata.ssl_cert_md5) AS MD5 
+VALUES(ssldata.ssl_cert_sha1) AS SHA1 
+VALUES(ssldata.ssl_cert_sha256) AS SHA256 
+VALUES(ssldata.dest_ip) AS "Destination IPs" 
+VALUES(ssldata.dest_port) AS "Destination Port"
+VALUES(ssldata.ja3) AS ja3
+VALUES(ssldata.ja3_desc) AS "JA3 Detection"
+from datamodel=pssl.ssldata BY ssldata.ssl_cert_sha1
+| search MD5=$hash$ OR SHA1=$hash$ OR SHA256=$hash$
+| search ja3=$ja3_sig$
+| fields Issuer "Dates Seen on Network"  "Cipher Fingerprint(s)" JA3 "JA3 Detection" "abuse.ch ssbl blacklist" Issued Expires  "Serial Number" "Organization Name" "Organization Unit" Locality State Country MD5 SHA1 SHA256 "Destination IPs"</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -117,7 +116,7 @@
         <format type="color" field="Blacklist Type">
           <colorPalette type="map">{*:#D93F3C}</colorPalette>
         </format>
-        <fields>["First Query","Last Query","upper_dom","Number of Queries","Distinct Answers","Distinct Subdomains","Distinct Clients","Max Subdomain Length","Blacklist Type","Blacklist Reference"]</fields>
+        <fields>[Issuer "Dates Seen on Network", "Cipher Fingerprint(s)", "JA3" "JA3 Detection", "abuse.ch ssbl blacklist", "Issued Expires",  "Serial Number", "Organization Name", "Organization Unit", "Locality", "State", "Country", "MD5", "SHA1", "SHA256", "Destination IPs"]</fields>
         <drilldown>
           <!-- Use set to specify the new token to be created.
                Use any token from the page or from the click event to produce the value needed. -->
@@ -158,7 +157,6 @@
   <row>
     <panel>
       <chart>
-        <title>Volume of DNS Events By All Types, Over Selected Time Period</title>
         <search>
           <query>tag=dns
 | where record_type!="*"
