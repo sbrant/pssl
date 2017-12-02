@@ -673,6 +673,30 @@
                     "editable": true,
                     "displayName": "ja3_version",
                     "comment": ""
+                },
+                {
+                    "fieldName": "sourcetype",
+                    "owner": "ssldata",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "sourcetype",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "ssl_version",
+                    "owner": "ssldata",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "ssl_version",
+                    "comment": ""
                 }
             ],
             "calculations": [
@@ -703,6 +727,35 @@
                     ],
                     "owner": "ssldata",
                     "calculationID": "vb9scq5i6tp",
+                    "editable": true
+                },
+                {
+                    "outputFields": [
+                        {
+                            "fieldName": "reason",
+                            "owner": "ssldata",
+                            "type": "string",
+                            "fieldSearch": "",
+                            "required": false,
+                            "multivalue": false,
+                            "hidden": false,
+                            "editable": true,
+                            "displayName": "sha1_reason",
+                            "comment": "",
+                            "lookupOutputFieldName": "reason"
+                        }
+                    ],
+                    "calculationType": "Lookup",
+                    "lookupName": "ssl_blacklist_2",
+                    "comment": "",
+                    "lookupInputs": [
+                        {
+                            "inputField": "ssl_cert_sha1",
+                            "lookupField": "sha1_cert"
+                        }
+                    ],
+                    "owner": "ssldata",
+                    "calculationID": "2row7nqmm05",
                     "editable": true
                 }
             ],
